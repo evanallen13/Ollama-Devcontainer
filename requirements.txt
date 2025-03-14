@@ -4,4 +4,5 @@ langchain
 chromadb
 pypdf
 pytest
-langchain-ollama
+langchain_ollama
+pysqlite3-binary
