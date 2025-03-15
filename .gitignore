@@ -72,3 +72,4 @@ coverage/
 .project
 *.tgz
 .vagrant/
+./chroma
