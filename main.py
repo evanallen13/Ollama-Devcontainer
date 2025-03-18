@@ -16,11 +16,26 @@ if __name__ == "__main__":
     sliced_documents = doc_loader.split_documents(documents)
     
     db = database("database")
-    
     db.add_to_chroma(sliced_documents)
     
+    os.system("clear")
+    # query_text = "What happens if you land on a property in Monopoly that you can't afford?"
+    
+   
+    
 
-    # llama = llama(OLLAMA_HOST, MODEL)
+    llama = llama(OLLAMA_HOST, MODEL)
 
     # prompt = input("Input prompt: ")
-    # llama.generate_response(prompt)
+    prompt = "What happens if you land on a property in Monopoly that you can't afford?"
+    results = db.similarity_search_with_score(prompt, k=3)
+    results_with_content = ""
+    
+    for i in results:
+        results_with_content += i[0].page_content + " "
+    
+    print(results[0][0].page_content)
+    llama.generate_response(f"""
+                            You are a expert on the rules of the games Monopoly and Ticket to Ride. 
+                            Using these documenets ${results_with_content} and the prompt ${prompt}
+                            """)

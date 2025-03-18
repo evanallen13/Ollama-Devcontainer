@@ -1,5 +1,6 @@
 from langchain_ollama import OllamaEmbeddings
 from langchain.vectorstores.chroma import Chroma
+from langchain.prompts import ChatPromptTemplate
 import requests
 import time
 
@@ -13,6 +14,10 @@ class database:
         self.embedding_model = "nomic-embed-text"
         self.ollama_base_url = "http://ollama:11434"
         
+    def similarity_search_with_score(self, query_text, k=3):
+        db = Chroma(persist_directory=CHROMA_PATH, embedding_function=self.get_embedding_function())
+        return db.similarity_search_with_score(query_text, k=k)
+    
     def ensure_model_exists(self):
         model_url = f"{self.ollama_base_url}/api/tags"
         try:

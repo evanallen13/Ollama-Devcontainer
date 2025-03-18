@@ -4,6 +4,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 class document_loader: 
     
     def load_documents(self, DATA_PATH="data"):
+        
         document_loader = PyPDFDirectoryLoader(DATA_PATH)
 
         return document_loader.load()
