@@ -17,25 +17,21 @@ if __name__ == "__main__":
     
     db = database("database")
     db.add_to_chroma(sliced_documents)
-    
-    os.system("clear")
-    # query_text = "What happens if you land on a property in Monopoly that you can't afford?"
-    
-   
-    
 
     llama = llama(OLLAMA_HOST, MODEL)
 
     # prompt = input("Input prompt: ")
     prompt = "What happens if you land on a property in Monopoly that you can't afford?"
-    results = db.similarity_search_with_score(prompt, k=3)
-    results_with_content = ""
+    results = db.similarity_search_with_score(prompt, k=1)
+    results_with_content = " ".join([i[0].page_content for i in results])
     
-    for i in results:
-        results_with_content += i[0].page_content + " "
-    
-    print(results[0][0].page_content)
+    os.system("clear")
     llama.generate_response(f"""
-                            You are a expert on the rules of the games Monopoly and Ticket to Ride. 
-                            Using these documenets ${results_with_content} and the prompt ${prompt}
-                            """)
+        You are an expert on the rules of Monopoly and Ticket to Ride.
+
+        Answer the following question using only the provided documents:
+
+        Question: ${prompt}
+        Reference Documents: ${results_with_content}
+
+        If the answer is not found in the documents, respond with: "I don't know.".""")
